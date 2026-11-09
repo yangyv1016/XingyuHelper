@@ -18,8 +18,10 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - name: Install Android SDK packages
-        run: sdkmanager --install 'platforms;android-34' 'build-tools;34.0.0'
+      - name: Check Android SDK packages on the runner
+        run: |
+          test -f "$ANDROID_HOME/platforms/android-34/android.jar"
+          test -x "$ANDROID_HOME/build-tools/34.0.0/apksigner"
       - name: Build APK and Wi-Fi initializer
         run: ./gradlew --no-daemon :app:assembleRelease :app:assembleWifiBootstrap
       - name: Verify and stage artifacts
